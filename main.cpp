@@ -70,6 +70,7 @@ int main()
 }
 
 
+
 void TEST_ALL_STRING_STUFF()
 {
 #ifndef _DEBUG
@@ -78,6 +79,8 @@ void TEST_ALL_STRING_STUFF()
 	//spit memory leaks to the console
 	
 	mem_test_start();
+
+	
 
 	// Constructors and length
 	{
@@ -172,6 +175,7 @@ void TEST_ALL_STRING_STUFF()
 			a = t;
 			char *trouble = new char;
 			a = trouble;
+			delete[]trouble;
 		}
 		mem_test_check();
 	}

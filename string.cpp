@@ -129,21 +129,25 @@ sfw::string & sfw::string::operator=(const char *a)
 
 sfw::string & sfw::string::operator+=(const string &a)
 {
-	
-	resize(a.m_size);
-	strcat_s(m_data, a.m_size, a.m_data);
-	return *this;
+	return *this = *this + a;
 }
 
 sfw::string & sfw::string::operator+=(const char *a)
 {
-	*this += a;
+	//string *a = new string[m_size];
+	//char tempA = *a;
+	//resize(tempA);
+	//strcat_s(m_data, m_size , tempA);
+	//*this += a;
+	
 	return *this;
 }
 
 sfw::string & sfw::string::operator+=(char a)
 {
-	*this += a;
+	resize(a);
+	//strcat(m_data, a);
+	//*this += a;
 	return *this;
 }
 
@@ -184,7 +188,7 @@ void sfw::string::resize(size_t size)
 	strncpy_s(t, size, m_data, _TRUNCATE);
 
 	//for (int i = 0; i < size; ++i)
-	//	t[i] = m_data[i];
+		//t[i] = m_data[i];
 	
 
 	//strcpy_s(t, size, m_data);
@@ -216,146 +220,235 @@ bool sfw::string::empty() const
 
 const char * sfw::string::cstring() const
 {
-	// TODO:
-	return nullptr;
+	
+	return m_data;
 }
 
-bool sfw::operator<(const string & a, const string & b)
+bool sfw::operator<(const string &a, const string &b)
 {
-	// TODO:
-	return false;
+	
+	if (strcmp(a.cstring(), b.cstring()) <0) { return true; }
+	else { return false; }
 }
 
 bool sfw::operator<(const string & a, const char * b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b) <0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator<(const char * a, const string & b)
 {
-	// TODO:
+	if (strcmp(a, b.cstring()) <0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator<=(const string & a, const string & b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b.cstring()) <=0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator<=(const string & a, const char * b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b) <=0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator<=(const char * a, const string & b)
 {
-	// TODO:
+	if (strcmp(a, b.cstring()) <= 0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator>(const string & a, const string & b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b.cstring()) >0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator>(const string & a, const char * b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b) >0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator>(const char * a, const string & b)
 {
-	// TODO:
+	if (strcmp(a, b.cstring()) >0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator>=(const string & a, const string & b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b.cstring()) >=0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator>=(const string & a, const char * b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b) >= 0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator>=(const char * a, const string & b)
 {
-	// TODO:
+	if (strcmp(a, b.cstring()) >= 0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator!=(const string & a, const string & b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b.cstring()) != 0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator!=(const string & a, const char * b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b) != 0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator!=(const char * a, const string & b)
 {
-	// TODO:
+	if (strcmp(a, b.cstring()) != 0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator==(const string & a, const string & b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b.cstring()) == 0) { return true; }
+	else { return false; }
 	return false;
 }
 
 bool sfw::operator==(const string & a, const char * b)
 {
-	// TODO:
+	if (strcmp(a.cstring(), b) == 0) { return true; }
+	else { return false; }
 	return false;
 }
 
-bool sfw::operator==(const char * a, const string & b)
+bool sfw::operator==(const char *a, const string &b)
 {
-	// TODO:
+	if (strcmp(a, b.cstring()) == 0) { return true; }
+	else { return false; }
 	return false;
 }
 
-sfw::string sfw::operator+(const string & a, const string & b)
+sfw::string sfw::operator+(const string &a, const string &b)
 {
-	// TODO:
-	return string();
+	int tempSize = a.length() + b.length() + 1;
+
+	// form a new string that can fit both strings
+	char * temp = new char[tempSize];
+
+	// copy the first term
+	strcpy_s(temp, tempSize, a.cstring());
+
+	// cat the second term
+	strcat_s(temp, tempSize, b.cstring());
+	
+	string retVal(temp);
+
+	delete temp;
+
+	return retVal;
 }
 
-sfw::string sfw::operator+(const string & a, const char * b)
+sfw::string sfw::operator+(const string &a, const char *b)
 {
-	// TODO:
-	return string();
+	int tempSize = a.length() + strlen(b) + 1;
+
+	// form a new string that can fit both strings
+	char * temp = new char[tempSize];
+
+	// copy the first term
+	strcpy_s(temp, tempSize, a.cstring());
+
+	// cat the second term
+	strcat_s(temp, tempSize, b);
+
+	string retVal(temp);
+
+	delete temp;
+
+	return retVal;
 }
 
-sfw::string sfw::operator+(const char * a, const string & b)
+sfw::string sfw::operator+(const char *a, const string &b)
 {
-	// TODO:
-	return string();
+	int tempSize = strlen(a) + b.length() + 1;
+
+	// form a new string that can fit both strings
+	char * temp = new char[tempSize];
+
+	// copy the first term
+	strcpy_s(temp, tempSize, a);
+
+	// cat the second term
+	strcat_s(temp, tempSize, b.cstring());
+
+	string retVal(temp);
+
+	delete temp;
+
+	return retVal;
 }
 
 sfw::string sfw::operator+(const string & a, char b)
 {
-	// TODO:
-	return string();
+	int tempSize = a.length() + b + 1;
+	 
+	// form a new string that can fit both strings
+	char * temp = new char[tempSize];
+
+	// copy the first term
+	strcpy_s(temp, tempSize, a.cstring());
+
+	// cat the second term
+	strcat_s(temp, tempSize, b);
+
+	string retVal(temp);
+
+	delete temp;
+
+	return retVal;
+	
 }
 
 sfw::string sfw::operator+(char a, const string & b)
 {
-	// TODO:
-	return string();
+	int tempSize = a + b.length() + 1;
+
+	// form a new string that can fit both strings
+	char * temp = new char[tempSize];
+
+	// copy the first term
+	strcpy_s(temp, tempSize, a);
+
+	// cat the second term
+	strcat_s(temp, tempSize, b.cstring());
+
+	string retVal(temp);
+
+	delete temp;
+
+	return retVal;
 }
 
 std::ostream & sfw::operator<<(std::ostream & os, const string & p)
