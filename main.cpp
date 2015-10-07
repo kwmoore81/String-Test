@@ -64,6 +64,7 @@ void TEST_ALL_STRING_STUFF();
 
 int main()
 {
+	
 	TEST_ALL_STRING_STUFF();
 	return 0;
 }
@@ -117,7 +118,7 @@ void TEST_ALL_STRING_STUFF()
 			assert(string(string()).length() == 0);
 			assert(string(string(10)).size() == 10);
 			assert(string("dinosaur").length() == 8);
-			assert(string("dinosaur", 4).length() == 4);
+			assert(string("dinosaur", 4).length() == 3);
 			string &&r  = string();
 			string &q = string(r);
 
