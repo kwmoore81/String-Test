@@ -279,7 +279,7 @@ void TEST_ALL_STRING_STUFF()
 		{
 			assert(strlen("blah"_sfw.cstring()) == 4);
 			string d("ddd");
-			assert(d == "dfd");
+			assert(d == "ddd");
 		}
 		mem_test_check();
 		//empty

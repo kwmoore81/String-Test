@@ -5,19 +5,19 @@
 #include <cassert>
 #include <climits>
 
-// A few freebies to get past the first couple of tests.
-// These may need to be modified!
+
 sfw::string::string(void)
 {
-		m_data = new char[m_size = 1]{ '\0' };
 		
-		
+	m_data = new char[m_size = 1]{ '\0' };	
+
 }
 
 sfw::string::~string()
 {
 	
 	delete[]m_data;
+	
 }
 
 size_t sfw::string::length() const
@@ -43,7 +43,6 @@ sfw::string::string(const char *a, size_t size)
 {
 	m_size = size;
 	m_data = new char[size];
-	//strncpy_s(m_data, a, _TRUNCATE);
 	
 	strncpy_s(m_data, m_size, a, _TRUNCATE);
 
@@ -52,8 +51,6 @@ sfw::string::string(const char *a, size_t size)
 
 sfw::string::string(const char *a)
 {
-	//check on this
-	//delete[] m_data;
 	if (a != nullptr)
 	{
 		m_data = new char[m_size = strlen(a) + 1];
@@ -82,11 +79,6 @@ sfw::string::string(const string &a)
 
 sfw::string::string(string &&a)
 {
-//	if (m_data != nullptr)
-//	{
-//		delete[] m_data;
-//	}
-
 	m_size = a.m_size;
 	m_data = a.m_data;
 	a.m_size = 1;
@@ -96,9 +88,7 @@ sfw::string::string(string &&a)
 
 sfw::string & sfw::string::operator=(const string &a)
 {
-	//if we are assigning to ourself, DON'T DO ANYTHING!
 	if (this == &a) return *this;
-	//create a new character array of the appropriate size.
 	*this = a.m_data;
 	return *this;
 }
@@ -134,20 +124,14 @@ sfw::string & sfw::string::operator+=(const string &a)
 
 sfw::string & sfw::string::operator+=(const char *a)
 {
-	//string *a = new string[m_size];
-	//char tempA = *a;
-	//resize(tempA);
-	//strcat_s(m_data, m_size , tempA);
-	//*this += a;
 	
-	return *this;
+	return *this = *this + a;
+
 }
 
 sfw::string & sfw::string::operator+=(char a)
 {
 	resize(a);
-	//strcat(m_data, a);
-	//*this += a;
 	return *this;
 }
 
@@ -170,34 +154,19 @@ size_t sfw::string::size() const
 	return size_t (m_size);
 }
 
-
-/*
-	create new array of size 
-	copy our existing info into that
-	delete our old info
-	assign our pointer to that guy
-	and set our size to match
-	// make sure that the new size is >= 1
-	// so that we can be certain it ends w/a
-	// terminating character
-*/
 void sfw::string::resize(size_t size)
 {
 	if (size < 1) size = 1;
+	if (size > UINT16_MAX) size = UINT16_MAX;
 	char *t = new char[size];
 	strncpy_s(t, size, m_data, _TRUNCATE);
-
-	//for (int i = 0; i < size; ++i)
-		//t[i] = m_data[i];
 	
-
-	//strcpy_s(t, size, m_data);
 	m_size = size;
 	delete[] m_data;
 	m_data = t;
 
 	m_data[size - 1] = '\0';
-	//UINT16MAX;
+	
 }
 
 void sfw::string::clear()
@@ -235,235 +204,187 @@ bool sfw::operator<(const string & a, const char * b)
 {
 	if (strcmp(a.cstring(), b) <0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator<(const char * a, const string & b)
 {
 	if (strcmp(a, b.cstring()) <0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator<=(const string & a, const string & b)
 {
 	if (strcmp(a.cstring(), b.cstring()) <=0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator<=(const string & a, const char * b)
 {
 	if (strcmp(a.cstring(), b) <=0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator<=(const char * a, const string & b)
 {
 	if (strcmp(a, b.cstring()) <= 0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator>(const string & a, const string & b)
 {
 	if (strcmp(a.cstring(), b.cstring()) >0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator>(const string & a, const char * b)
 {
 	if (strcmp(a.cstring(), b) >0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator>(const char * a, const string & b)
 {
 	if (strcmp(a, b.cstring()) >0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator>=(const string & a, const string & b)
 {
 	if (strcmp(a.cstring(), b.cstring()) >=0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator>=(const string & a, const char * b)
 {
 	if (strcmp(a.cstring(), b) >= 0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator>=(const char * a, const string & b)
 {
 	if (strcmp(a, b.cstring()) >= 0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator!=(const string & a, const string & b)
 {
 	if (strcmp(a.cstring(), b.cstring()) != 0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator!=(const string & a, const char * b)
 {
 	if (strcmp(a.cstring(), b) != 0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator!=(const char * a, const string & b)
 {
 	if (strcmp(a, b.cstring()) != 0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator==(const string & a, const string & b)
 {
 	if (strcmp(a.cstring(), b.cstring()) == 0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator==(const string & a, const char * b)
 {
 	if (strcmp(a.cstring(), b) == 0) { return true; }
 	else { return false; }
-	return false;
 }
 
 bool sfw::operator==(const char *a, const string &b)
 {
 	if (strcmp(a, b.cstring()) == 0) { return true; }
 	else { return false; }
-	return false;
 }
 
 sfw::string sfw::operator+(const string &a, const string &b)
 {
 	int tempSize = a.length() + b.length() + 1;
-
-	// form a new string that can fit both strings
 	char * temp = new char[tempSize];
-
-	// copy the first term
+	
 	strcpy_s(temp, tempSize, a.cstring());
-
-	// cat the second term
 	strcat_s(temp, tempSize, b.cstring());
 	
 	string retVal(temp);
-
 	delete temp;
-
 	return retVal;
 }
 
 sfw::string sfw::operator+(const string &a, const char *b)
 {
 	int tempSize = a.length() + strlen(b) + 1;
-
-	// form a new string that can fit both strings
 	char * temp = new char[tempSize];
 
-	// copy the first term
 	strcpy_s(temp, tempSize, a.cstring());
-
-	// cat the second term
 	strcat_s(temp, tempSize, b);
 
 	string retVal(temp);
-
 	delete temp;
-
 	return retVal;
 }
 
 sfw::string sfw::operator+(const char *a, const string &b)
 {
 	int tempSize = strlen(a) + b.length() + 1;
-
-	// form a new string that can fit both strings
 	char * temp = new char[tempSize];
 
-	// copy the first term
 	strcpy_s(temp, tempSize, a);
-
-	// cat the second term
 	strcat_s(temp, tempSize, b.cstring());
 
 	string retVal(temp);
-
 	delete temp;
-
 	return retVal;
 }
 
 sfw::string sfw::operator+(const string & a, char b)
 {
-	int tempSize = a.length() + b + 1;
-	 
-	// form a new string that can fit both strings
+	int tempSize = a.length() + sizeof(b) + 1;
+	char *pB = &b;
 	char * temp = new char[tempSize];
 
-	// copy the first term
 	strcpy_s(temp, tempSize, a.cstring());
-
-	// cat the second term
-	strcat_s(temp, tempSize, b);
+	strcat_s(temp, tempSize, pB);
 
 	string retVal(temp);
-
 	delete temp;
-
 	return retVal;
 	
 }
 
 sfw::string sfw::operator+(char a, const string & b)
 {
-	int tempSize = a + b.length() + 1;
-
-	// form a new string that can fit both strings
+	int tempSize = sizeof(a) + b.length() + 1;
+	char *pA = &a;
 	char * temp = new char[tempSize];
 
-	// copy the first term
-	strcpy_s(temp, tempSize, a);
-
-	// cat the second term
+	strcpy_s(temp, tempSize, pA);
 	strcat_s(temp, tempSize, b.cstring());
 
 	string retVal(temp);
-
 	delete temp;
-
 	return retVal;
 }
 
-std::ostream & sfw::operator<<(std::ostream & os, const string & p)
+std::ostream & sfw::operator<<(std::ostream &os, const string &p)
 {
-	// TODO:
+	os << p.cstring();
 	return os;
 }
 
-std::istream & sfw::operator>>(std::istream & is, string & p)
+std::istream & sfw::operator>>(std::istream &is, string &p)
 {
-	// TODO:
+	char temp[UINT16_MAX];
+	is >> temp;
+	p = temp;
 	return is;
 }
 
-const sfw::string sfw::literals::operator""_sfw(const char * a, size_t len)
+const sfw::string sfw::literals::operator""_sfw(const char *a, size_t len)
 {
 	 
 	return string(a , len + 1);

@@ -1,64 +1,14 @@
 #pragma once
-
-/************************************************
-DELETE THIS SECTION BEFORE FINAL SUBMISSION
-
-This is a prototype class that should encapsulate
-dynamic memory management of a character array.
-
-Its functions should seek to take as much advantage
-as possible of the <cstring> standard library.
-strcpy, strcat, and strcmp will be especially useful.
-
-The solutions for each of these functions are
-about 3-5 lines. Remember, these functions may
-be used by each other to greatly reduce the 
-amount of work required (1 line solutions for many!)
-
-Hint: Try implementing the 'resize' first. If you
-keep most all of your dynamic memory management
-to a single function, you can reuse it without
-worrying about memory!
-
-Note: It will be necessary for this class to
-implement the C++ "Rule of 5" AND overload
-stream operators for functionality with cin/cout.
-Don't expect to solve these without research
-or help!
-
-IMPORTANT:
-You should modify this header and implement
-whatever additional functionality you find useful.
-
-Modify this project until it compiles without error.
-When successful, copy the string.h and string.cpp to
-your game project.
-
-YOU MAY CHANGE THE NAMESPACE IF YOU WISH,
-but fix the test-main.
-
-
-Final Hint:
-If you hover-click on a green squiggly and select
-"show potential fixes," one of them says
-"Create definition in <filename>.cpp". You may use this
-to automatically generate the function definitions
-in the source file.
-**************************************************/
-
-
-
-
 /*************************************************
-<FILL OUT THIS PORTION AND LEAVE IT IN YOUR FILE>
-NAME OF FILE (ie. string.h)
+string.h
 
-DESCRIPTION OF WHAT THIS FILE DOES,
-WHAT'S IN IT, AND HOW IT SHOULD WORK!
-DUPLICATE THIS FOR THE SOURCE FILE.
+This file is a string class that helps make working with and 
+editing strings easier. It has functions for resizing strings, 
+coping strings, adding multiple strings together. It also includes
+overload operators such as >, <, =, +, +=, ==, !=, <=, >=, [], <<, and >>.
 
 Esmeralda Salamone, esmes@aie.edu.au, 9/23/2015
-Modified: STUDENT NAME, EMAIL, DATE OF LAST EDIT
+Modified: Kevin Moore, kevin.moore@students.aie.edu.au, 10/12/2015
 
 All rights reserved.
 ***************************************************/
@@ -68,87 +18,81 @@ All rights reserved.
 // iostream should still be included in the source file
 #include <iosfwd>
 
-/*
-The following comments describe implementation details
-for each function. These comments are hints to you-
-THEY SHOULD BE REMOVED and each function should have
-a short comment describing what the function does.
-*/
 namespace sfw
 {
 	class string
 	{
 	private:
-		char *m_data;	// Pointer to a dynamically allocated char array
+		char *m_data;	// Pointer to a dynamically allocated char array.
 		size_t m_size;	// How much data can our array currently store?
 
 	public:	
-		string(void); // Should set m_data and m_size to meaningful defaults
+		string(void); // Sets m_data and m_size to their defaults.
 
-		string(size_t size); // create an empty string with a given amount of memory.
+		string(size_t size); // Creates an empty string with a size of your choosing.
 		string(const char *a, size_t size);
-						// duplicate data in character array, and set our size to size.
+						// Duplicates data in character array with a size of your choosing.
 		
-		~string(); // should free (delete) dynamic memory if any is still in use (rule of 5).
+		~string(); // Deletes the current string data.
 
-		// Constructors, use strcpy
-		string(const char *a);		// should duplicate the data of the character array
-		string(const string &a);	// should duplicate the data of the other string (rule of 5).
-		string(string &&a);			// should 'steal' the dynamic memory from the other string (rule of 5).
+		
+		string(const char *a);		// Duplicates the data of the current character array.
+		string(const string &a);	// Duplicate the data of the copied string.
+		string(string &&a);			// Takes the memory address of the current string.
 
-		// Assignment operators, use strcpy
-		string &operator=(const string &a); // should duplicate the data of the other string (rule of 5).
-		string &operator=(string &&a);		// should 'steal' the dynamic memory from the other string (rule of 5).
-		string &operator=(const char *a);	// should duplicate the data of the character array
+		// Overloads the = operator for the above functions.
+		string &operator=(const string &a); 
+		string &operator=(string &&a);		
+		string &operator=(const char *a);	
 
-		// Concatenation assignment (resize and use strcat())
+		// Overloads the += operator for the above functions.
+		//For adding multiple strings together.
 		string &operator+=(const string &a);
 		string &operator+=(const char *a);
 		string &operator+=(char a);
 
-		// Array indexing
-		char &operator[](size_t index);				// write access to an indexed character
-		const char &operator[](size_t index) const; // read-only access to an indexed character
+		// Overloads the [] operator
+		char &operator[](size_t index);				
+		const char &operator[](size_t index) const; 
 
-		size_t length() const;	// return the length of the string (strlen)
-		size_t size() const;	// return the max number of chars we could hold (m_size-1, for term char)
+		size_t length() const;	// Current length of the current string.
+		size_t size() const;	// Current size of the current string.
 
-		void resize(size_t size);	// create a new array of size, strcpy old data, then delete old data
-		void clear();				// set the first character to '\0'
-		bool empty() const;			// returns true if the first character is '\0'
+		void resize(size_t size);	// Resizes the current string.
+		void clear();				// clears the current string except for '\0'
+		bool empty() const;			// Tells you if the current string is empty
 
-		const char *cstring() const;	// constant access to m_data
+		const char *cstring() const;	// Gives you the current string.
 	};
 
-	// Relational operator overloads- use strcmp()
-		// less-than is true if alphabetical-ascending
+	// Overloads the < operators.
 	bool operator<(const string &a, const string &b);
 	bool operator<(const string &a, const char *b); 
 	bool operator<(const char *a, const string &b);
-
+	// Overloads the <= operator.
 	bool operator<=(const string &a, const string &b);
 	bool operator<=(const string &a, const char *b);
 	bool operator<=(const char *a, const string &b);
-		// greater-than is true if alphabetical-descending
+	// Overloads the > operator.
 	bool operator>(const string &a, const string &b);
 	bool operator>(const string &a, const char *b);
 	bool operator>(const char *a, const string &b);
-
+	// Overloads the >= operator.
 	bool operator>=(const string &a, const string &b);
 	bool operator>=(const string &a, const char *b);
 	bool operator>=(const char *a, const string &b);
-
+	// Overloads the != operator.
 	bool operator!=(const string &a, const string &b);
 	bool operator!=(const string &a, const char *b);
 	bool operator!=(const char *a, const string &b);
-
+	// Overloads the == operator.
 	bool operator==(const string &a, const string &b);
 	bool operator==(const string &a, const char *b);
 	bool operator==(const char *a, const string &b);
 
-	// Concatenation operations- so many possible combinations.
-		// should create a new string that is the concatenation of the two passed in.
-		// Should support single characters also.
+	
+	// Overloads the + operator.
+	//For adding multiple strings together.
 	string operator+(const string &a, const string &b);
 	string operator+(const string &a, const char *b);
 	string operator+(const char *a, const string &b);
@@ -156,15 +100,14 @@ namespace sfw
 	string operator+(const string &a, char b);
 	string operator+(char a, const string &b);
 
-	// Literal operator overload, use given char data to create a string
-	// ie, "I AM A STRING"_sfw; should create a string /class/ literal!
+	//Overloads the "" operator to create a literal.
 	inline namespace literals {
 		const string operator""_sfw(const char *a, size_t len); }
 
 	// Allows us to work with stream processors (cin/cout)
-	// they can be a little tricky! Don't be afraid to do research.
-	std::ostream &operator<<(std::ostream &os, const string& p); //output stream operator
-	std::istream &operator>>(std::istream &is, string& p); //input stream operator
+	//Overloads the >> & << operators to work with the stream processors cin & cout
+	std::ostream &operator<<(std::ostream &os, const string& p); 
+	std::istream &operator>>(std::istream &is, string& p); 
 
 }
 
